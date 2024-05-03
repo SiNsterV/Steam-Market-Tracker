@@ -23,7 +23,7 @@ def main():
     if choice == "Home":
         st.subheader("Home")
 
-    elif choice == "Login":
+    elif choice == "Login" and 'user' not in st.session_state:
         st.sidebar.subheader("Login Section")
         username = st.sidebar.text_input("User Name")
         password = st.sidebar.text_input("Password", type='password')
@@ -46,7 +46,7 @@ def main():
         if st.button("Signup"):
             data.create_usertable()
             data.add_userdata(new_user, data.make_hashes(new_password), steam_api_key)
-            st.success("You have successfully created a valid Account")
+            st.success("You have successfully created an account")
             st.info("Go to Login Menu to login")
 
     elif choice == "Update Steam API Key":
