@@ -147,6 +147,7 @@ def program():
             else:
                 st.warning("ENTER AN ITEM")
         # Button handling for adding and removing items
+            st.rerun()
 
         def save_current_config(username):
             preset_name = st.session_state.preset_name
@@ -233,6 +234,7 @@ def program():
                         if market_hash_name:
                             update_price(st.session_state['steam_api_key'], app_id, market_hash_name)
                             st_autorefresh(interval=300000, key=f'autorefresh{idx+1}')
+                            
                     with col2:
                         with st.container(height=200):
                                 if market_hash_name in st.session_state['prices']:
