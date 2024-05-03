@@ -71,7 +71,7 @@ def program():
         def get_current_time():
             return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        def get_steam_market_item(, app_id, market_hash_name):
+        def get_steam_market_item(api_key, app_id, market_hash_name):
             url = f"https://steamcommunity.com/market/priceoverview/?appid={app_id}&currency=3&market_hash_name={market_hash_name}"
             headers = {'Content-Type': 'application/json'}
             params = {'key': }
