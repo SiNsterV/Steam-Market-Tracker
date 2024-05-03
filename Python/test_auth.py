@@ -59,6 +59,7 @@ def main():
     elif choice == "Logout":
         st.session_state.pop('user', None)  # Remove user from session
         st.info("You have been logged out.")
+        st.rerun()
 
     if 'user' in st.session_state:
         if data.is_steam_api_key_zero(st.session_state['user']):
