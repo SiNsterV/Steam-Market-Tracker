@@ -33,6 +33,7 @@ def main():
             hashed_pswd = data.make_hashes(password)
             result = data.login_user(username, hashed_pswd)
             if result:
+                st.rerun()
                 st.session_state['user'] = result['username']
                 st.success(f"Logged In as {username}")
                 choice = "Update Steam API Key"
