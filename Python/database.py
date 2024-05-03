@@ -17,8 +17,9 @@ def create_usertable():
             username TEXT UNIQUE, 
             password TEXT, 
             steamapikey TEXT,
-            preset_name TEXT,
-            items TEXT,
+            preset_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            preset_name TEXT UNIQUE,
+            items TEXT NOT NULL,
             UNIQUE(username,preset_name)
             );
         ''')
