@@ -32,22 +32,19 @@ def program():
         # Load or initialize presets
         def load_presets(username):
             with ta.get_db_connection() as conn:
-                # It's important to fetch data as a dictionary or ensure you correctly reference columns
                 cursor = conn.cursor()
-                cursor.execute('SELECT preset_name, items FROM userstable WHERE username = ?', (username,))
+                cursor.execute('SELECT preset_id, preset_name, items FROM userstable WHERE username = ?', (username,))
                 presets = {}
-                for row in cursor.fetchall():  # Ensure that you iterate over fetched results
+                for row in cursor.fetchall():
+                    preset_id = row['preset_id']
                     preset_name = row['preset_name']
                     items = row['items']
-                    if items:  # Ensure that 'items' is not None or empty
-                        try:
-                            # Presuming items is stored as a JSON-encoded string
-                            presets[preset_name] = json.loads(items)
-                        except json.JSONDecodeError:
-                            st.error(f"Error decoding JSON for preset: {preset_name}")
-                    else:
-                        st.error(f"No items found for preset: {preset_name}, possibly corrupted data.")
+                    try:
+                        presets[preset_id] = {'name': preset_name, 'items': json.loads(items)}
+                    except json.JSONDecodeError:
+                        st.error(f"Error decoding JSON for preset ID: {preset_id}")
             return presets
+
 
 
 
@@ -56,11 +53,13 @@ def program():
         def save_presets(username, preset_name, items):
             items_json = json.dumps(items)
             with ta.get_db_connection() as conn:
-                conn.execute('''
-                    INSERT OR REPLACE INTO userstable (username, preset_name, items)
+                cursor = conn.cursor()
+                cursor.execute('''
+                    INSERT INTO userstable (username, preset_name, items)
                     VALUES (?, ?, ?)
                 ''', (username, preset_name, items_json))
                 conn.commit()
+
 
 
         # Function to save the updated price history to a file
@@ -176,9 +175,12 @@ def program():
             else:
                 st.warning("Maximum of 5 items allowed.")
 
-        def remove_item():
-            if 'item_count' in st.session_state and st.session_state.item_count > 0:
-                st.session_state.item_count -= 1
+        def remove_preset(username, preset_id):
+            with ta.get_db_connection() as conn:
+                conn.execute('DELETE FROM userstable WHERE username = ? AND preset_id = ?', (username, preset_id))
+                conn.commit()
+
+                
         st.sidebar.divider()
         st.sidebar.button("Add new item", on_click=add_item)
         st.sidebar.button("Remove Last Item", on_click=remove_item)
