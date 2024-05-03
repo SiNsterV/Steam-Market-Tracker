@@ -243,6 +243,7 @@ def program():
                     with st.container(height=200):      
                         if market_hash_name:
                             plot_data(market_hash_name)
+                            st.rerun()
     with tab2:
         fill, col1, col2, fill2 = st.columns([1,2,2,1])
 
