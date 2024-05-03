@@ -43,7 +43,7 @@ def program():
                         except json.JSONDecodeError:
                             st.error(f"Error decoding JSON for preset: {preset_name}")
                     else:
-                        st.error(f"No items found for preset: {preset_name}, possibly corrupted data.")
+                        st.error(f"No items found")
                 return presets
 
 
