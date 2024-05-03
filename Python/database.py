@@ -18,7 +18,6 @@ def create_usertable():
             password TEXT, 
             preset_name TEXT UNIQUE,
             items TEXT,
-            UNIQUE(username,preset_name)
             );
         ''')
         conn.commit()
