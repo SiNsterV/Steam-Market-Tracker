@@ -118,7 +118,7 @@ def program():
         #def convert_currency(amount, rate):
             return round(amount * rate, 2)
 
-
+        @st.experimental_fragment
         def update_price(api_key, app_id, market_hash_name):
             current_time = get_current_time()
             if market_hash_name:
@@ -209,7 +209,7 @@ def program():
             df = pd.DataFrame(data_list)
             return df
 
-        @st.experimental_fragment()
+        @st.experimental_fragment
         def plot_data(item_name):
             df = load_data_to_dataframe()
             if item_name in df['item_name'].unique():
