@@ -23,7 +23,7 @@ def main():
     if choice == "Home":
         st.subheader("Home")
 
-    elif choice == "Login" and 'user' not in st.session_state:
+    elif choice == "Login":
         st.sidebar.subheader("Login Section")
         username = st.sidebar.text_input("User Name")
         password = st.sidebar.text_input("Password", type='password')
