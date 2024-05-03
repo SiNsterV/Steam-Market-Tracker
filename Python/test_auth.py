@@ -36,8 +36,8 @@ def main():
                 st.session_state['user'] = result['username']
                 st.success(f"Logged In as {username}")
                 choice = "Update Steam API Key"
-                st.rerun()
                 program()
+
             else:
                 st.error("This process didn't succeed")
 
