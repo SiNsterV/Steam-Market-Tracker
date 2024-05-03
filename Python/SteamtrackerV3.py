@@ -179,7 +179,7 @@ def program():
         st.sidebar.divider()
         st.sidebar.button("Add new item", on_click=add_item)
         st.sidebar.button("Remove Last Item", on_click=remove_item)
-        st.sidebar.button("Manual Refresh", on_click=st.rerun)
+        st.sidebar.button("Manual Refresh")
 
         st.sidebar.divider()
 
