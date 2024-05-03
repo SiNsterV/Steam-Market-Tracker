@@ -7,6 +7,8 @@ from datetime import datetime
 from pathlib import Path
 import database as ta
 
+import streamlit_authenticator as stauth
+
 
 def program():
     username = st.session_state.get('user', 'No User Set')
@@ -118,7 +120,7 @@ def program():
         #def convert_currency(amount, rate):
             return round(amount * rate, 2)
 
-        @st.experimental_fragment
+
         def update_price(api_key, app_id, market_hash_name):
             current_time = get_current_time()
             if market_hash_name:
@@ -208,7 +210,6 @@ def program():
 
             df = pd.DataFrame(data_list)
             return df
-
         @st.experimental_fragment
         def plot_data(item_name):
             df = load_data_to_dataframe()
@@ -216,7 +217,7 @@ def program():
                 item_data = df[df['item_name'] == item_name]
                 st.write(f"Price History for {item_name}")
                 st.line_chart(item_data.set_index('timestamp')['price'])
-            st_autorefresh(interval=300000, key=f'autorefresh')
+            st_autorefresh(interval=3000, key=f'autorefresh')
 
         with col1:
                 st.header("Input")
@@ -233,7 +234,7 @@ def program():
                         market_hash_name = st.text_input("Enter Desired Item", key=f'item_name{idx+1}')
                         if market_hash_name:
                             update_price(st.session_state['steam_api_key'], app_id, market_hash_name)
-                            
+
                     with col2:
                         with st.container(height=200):
                                 if market_hash_name in st.session_state['prices']:
@@ -244,6 +245,7 @@ def program():
                     with st.container(height=200):      
                         if market_hash_name:
                             plot_data(market_hash_name)
+
     with tab2:
         fill, col1, col2, fill2 = st.columns([1,2,2,1])
 
