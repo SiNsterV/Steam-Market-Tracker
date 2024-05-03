@@ -83,18 +83,6 @@ def program():
                 st.error("Failed to fetch item data: " + str(e))
                 return None
 
-        # Function to get exchange rates
-        #def get_exchange_rates():
-            url = f"https://v6.exchangerate-api.com/v6/{}/latest/USD"
-            try:
-                response = requests.get(url)
-                response.raise_for_status()
-                rates = response.json().get('conversion_rates', {})
-                return rates
-            except requests.RequestException as e:
-                st.error("Failed to fetch exchange rates: " + str(e))
-                return {}
-
         #rates = get_exchange_rates(exchange_)
         # Session state for storing prices, timing, and last prices for comparison
         if 'eur_price' not in st.session_state:
@@ -122,10 +110,10 @@ def program():
             return round(amount * rate, 2)
 
 
-        def update_price(, app_id, market_hash_name):
+        def update_price(steam_api_key, app_id, market_hash_name):
             current_time = get_current_time()
             if market_hash_name:
-                item_data = get_steam_market_item(, app_id, market_hash_name)
+                item_data = get_steam_market_item(steam_api_key, app_id, market_hash_name)
                 if item_data and 'lowest_price' in item_data:
                     #usd_price = float(item_data['lowest_price'].strip('$'))
                     new_eur_price = float(item_data['lowest_price'].strip('€').replace(',','.').replace('--','00'))
