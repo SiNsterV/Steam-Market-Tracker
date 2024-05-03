@@ -6,14 +6,14 @@ import pandas as pd
 from datetime import datetime
 from pathlib import Path
 import database as ta
+import os
 
 
 def program():
+    steam_api_key = st.secrets["STEAM_API"]
     username = st.session_state.get('user', 'No User Set')
     ta.create_usertable()
     tab1, tab2 = st.tabs(["Main", "Preset Manager"])
-    if 'steam_api_key' not in st.session_state:
-        st.session_state['steam_api_key'] = None
 
     with tab1:
         col1, col2, col3 = st.columns([2,2,4])
@@ -71,10 +71,10 @@ def program():
         def get_current_time():
             return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        def get_steam_market_item(api_key, app_id, market_hash_name):
+        def get_steam_market_item(, app_id, market_hash_name):
             url = f"https://steamcommunity.com/market/priceoverview/?appid={app_id}&currency=3&market_hash_name={market_hash_name}"
             headers = {'Content-Type': 'application/json'}
-            params = {'key': api_key}
+            params = {'key': }
             try:
                 response = requests.get(url, headers=headers, params=params)
                 response.raise_for_status()
@@ -84,8 +84,8 @@ def program():
                 return None
 
         # Function to get exchange rates
-        #def get_exchange_rates(api_key):
-            url = f"https://v6.exchangerate-api.com/v6/{api_key}/latest/USD"
+        #def get_exchange_rates():
+            url = f"https://v6.exchangerate-api.com/v6/{}/latest/USD"
             try:
                 response = requests.get(url)
                 response.raise_for_status()
@@ -95,7 +95,7 @@ def program():
                 st.error("Failed to fetch exchange rates: " + str(e))
                 return {}
 
-        #rates = get_exchange_rates(exchange_api_key)
+        #rates = get_exchange_rates(exchange_)
         # Session state for storing prices, timing, and last prices for comparison
         if 'eur_price' not in st.session_state:
             st.session_state['eur_price'] = 0
@@ -122,10 +122,10 @@ def program():
             return round(amount * rate, 2)
 
 
-        def update_price(api_key, app_id, market_hash_name):
+        def update_price(, app_id, market_hash_name):
             current_time = get_current_time()
             if market_hash_name:
-                item_data = get_steam_market_item(api_key, app_id, market_hash_name)
+                item_data = get_steam_market_item(, app_id, market_hash_name)
                 if item_data and 'lowest_price' in item_data:
                     #usd_price = float(item_data['lowest_price'].strip('$'))
                     new_eur_price = float(item_data['lowest_price'].strip('€').replace(',','.').replace('--','00'))
@@ -240,7 +240,7 @@ def program():
                     with st.container(height=200):
                         market_hash_name = st.text_input("Enter Desired Item", key=f'item_name{idx+1}')
                         if market_hash_name:
-                            update_price(st.session_state['steam_api_key'], app_id, market_hash_name)
+                            update_price(steam_api_key, app_id, market_hash_name)
 
                     with col2:
                         with st.container(height=200):
