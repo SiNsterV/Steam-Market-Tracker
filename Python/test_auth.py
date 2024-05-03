@@ -35,8 +35,7 @@ def main():
             if result:
                 st.session_state['user'] = result['username']
                 st.success(f"Logged In as {username}")
-                choice = "Update Steam API Key"
-                program()
+                st.rerun()
 
             else:
                 st.error("This process didn't succeed")
@@ -56,6 +55,9 @@ def main():
         st.session_state.pop('user', None)  # Remove user from session
         st.info("You have been logged out.")
         st.rerun()
+
+    if 'user' in st.session_state:
+        program()
 
 if __name__ == '__main__':
     main()
