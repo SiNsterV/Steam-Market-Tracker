@@ -14,13 +14,15 @@ def create_usertable():
     with get_db_connection() as conn:
         conn.execute('''
         CREATE TABLE IF NOT EXISTS userstable(
-            username TEXT UNIQUE, 
+            username TEXT, 
             password TEXT, 
-            preset_name TEXT UNIQUE,
+            preset_name TEXT,
             items TEXT,
+            UNIQUE(username,preset_name)
             );
         ''')
         conn.commit()
+
 
 def add_userdata(username, password):
     with get_db_connection() as conn:
