@@ -16,7 +16,7 @@ def main():
         choice = st.sidebar.selectbox("Menu", menu)
     else:
         # User is logged in
-        menu = ["Home", "Update Steam API Key", "Logout"]
+        menu = ["Home", "Logout"]
         choice = st.sidebar.selectbox("Menu", menu)
         st.sidebar.write(f"Logged in as {st.session_state['user']}")
 
@@ -37,6 +37,7 @@ def main():
                 st.success(f"Logged In as {username}")
                 choice = "Update Steam API Key"
                 st.rerun()
+                program()
             else:
                 st.error("This process didn't succeed")
 
@@ -51,24 +52,10 @@ def main():
             st.success("You have successfully created an account")
             st.info("Go to Login Menu to login")
 
-    elif choice == "Update Steam API Key":
-        st.subheader("Update your Steam API Key")
-        new_api_key = st.text_input("Steam API Key", value="")
-        if st.button("Update API Key"):
-            data.update_steam_api_key(st.session_state['user'], new_api_key)
-            st.success("Steam API Key Updated Successfully")
-
     elif choice == "Logout":
         st.session_state.pop('user', None)  # Remove user from session
         st.info("You have been logged out.")
         st.rerun()
-
-    if 'user' in st.session_state:
-        if data.is_steam_api_key_zero(st.session_state['user']):
-            st.warning("Your Steam API key is not set. Please update your Steam API Key.")
-        else:
-            st.sidebar.write("Your Steam API key is set.")
-            program()
 
 if __name__ == '__main__':
     main()
