@@ -32,19 +32,22 @@ def program():
         # Load or initialize presets
         def load_presets(username):
             with ta.get_db_connection() as conn:
-                rows = conn.execute('SELECT preset_name, items FROM userstable WHERE username = ?', (username,))
+                # It's important to fetch data as a dictionary or ensure you correctly reference columns
+                cursor = conn.cursor()
+                cursor.execute('SELECT preset_name, items FROM userstable WHERE username = ?', (username,))
                 presets = {}
-                for row in rows:
+                for row in cursor.fetchall():  # Ensure that you iterate over fetched results
                     preset_name = row['preset_name']
                     items = row['items']
-                    if items:  # Ensure that 'items' is not None
+                    if items:  # Ensure that 'items' is not None or empty
                         try:
+                            # Presuming items is stored as a JSON-encoded string
                             presets[preset_name] = json.loads(items)
                         except json.JSONDecodeError:
                             st.error(f"Error decoding JSON for preset: {preset_name}")
                     else:
-                        st.error(f"No items found")
-                return presets
+                        st.error(f"No items found for preset: {preset_name}, possibly corrupted data.")
+            return presets
 
 
 
@@ -155,14 +158,14 @@ def program():
                 save_presets(username, preset_name, items)
                 st.sidebar.success("Preset saved!")
 
-        def load_selected_preset(username):
+        def load_selected_preset(username, selected_preset):
             presets = load_presets(username)
-            preset_name = st.session_state.selected_preset
-            if preset_name in presets:
-                preset = presets[preset_name]
-                st.session_state['item_count'] = len(preset)
-                for idx, item_name in enumerate(preset):
+            if selected_preset in presets:
+                preset_items = presets[selected_preset]
+                st.session_state['item_count'] = len(preset_items)
+                for idx, item_name in enumerate(preset_items):
                     st.session_state[f'item_name{idx+1}'] = item_name
+
 
 
         def add_item():
