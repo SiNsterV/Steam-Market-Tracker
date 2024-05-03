@@ -48,7 +48,7 @@ def main():
         steam_api_key = "0"
         if st.button("Signup"):
             data.create_usertable()
-            data.add_userdata(new_user, data.make_hashes(new_password), steam_api_key)
+            data.add_userdata(new_user, data.make_hashes(new_password))
             st.success("You have successfully created an account")
             st.info("Go to Login Menu to login")
 
