@@ -209,13 +209,14 @@ def program():
             df = pd.DataFrame(data_list)
             return df
 
-        @st.experimental_fragment
+        st.experimental_fragment
         def plot_data(item_name):
             df = load_data_to_dataframe()
             if item_name in df['item_name'].unique():
                 item_data = df[df['item_name'] == item_name]
                 st.write(f"Price History for {item_name}")
                 st.line_chart(item_data.set_index('timestamp')['price'])
+                st.rerun()
 
         with col1:
                 st.header("Input")
