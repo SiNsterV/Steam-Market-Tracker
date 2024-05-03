@@ -147,7 +147,6 @@ def program():
             else:
                 st.warning("ENTER AN ITEM")
         # Button handling for adding and removing items
-            st.rerun()
 
         def save_current_config(username):
             preset_name = st.session_state.preset_name
