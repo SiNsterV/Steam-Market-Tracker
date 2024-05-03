@@ -36,6 +36,7 @@ def main():
                 st.session_state['user'] = result['username']
                 st.success(f"Logged In as {username}")
                 choice = "Update Steam API Key"
+                st.rerun()
 
     elif choice == "SignUp" and 'user' not in st.session_state:
         st.subheader("Create New Account")
