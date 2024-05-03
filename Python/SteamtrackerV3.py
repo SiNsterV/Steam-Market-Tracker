@@ -7,8 +7,6 @@ from datetime import datetime
 from pathlib import Path
 import database as ta
 
-import streamlit_authenticator as stauth
-
 
 def program():
     username = st.session_state.get('user', 'No User Set')
