@@ -194,9 +194,14 @@ def program():
             save = st.sidebar.button("Save", on_click=save_current_config(username))
 
         st.sidebar.header("Load in a preset")
-        preset_options = list(presets.keys())
-        selected_preset = st.sidebar.selectbox("Load a preset",preset_options, key='selected_preset')
-        st.sidebar.button("Load", on_click=load_selected_preset(username))
+     # Using the load presets function and adding the choice to session state
+        preset_options = list(load_presets(username).keys())
+        if preset_options:  # Check if there are any presets
+            selected_preset = st.sidebar.selectbox("Choose a preset", preset_options)
+            if st.sidebar.button("Load"):
+                # Load the selected preset's items
+                load_selected_preset(username, selected_preset)  # Define this function if not already defined
+
 
         def load_data_to_dataframe():
             data = load_price_history()
