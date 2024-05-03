@@ -216,7 +216,6 @@ def program():
                 item_data = df[df['item_name'] == item_name]
                 st.write(f"Price History for {item_name}")
                 st.line_chart(item_data.set_index('timestamp')['price'])
-                st.rerun()
 
         with col1:
                 st.header("Input")
