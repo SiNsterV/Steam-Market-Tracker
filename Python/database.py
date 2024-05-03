@@ -16,7 +16,6 @@ def create_usertable():
         CREATE TABLE IF NOT EXISTS userstable(
             username TEXT UNIQUE, 
             password TEXT, 
-            steamapikey TEXT,
             preset_name TEXT UNIQUE,
             items TEXT NOT NULL,
             UNIQUE(username,preset_name)
@@ -24,26 +23,12 @@ def create_usertable():
         ''')
         conn.commit()
 
-def add_userdata(username, password, steam_api_key):
+def add_userdata(username, password):
     with get_db_connection() as conn:
-        conn.execute('INSERT INTO userstable(username, password, steamapikey) VALUES (?, ?, ?)', (username, password, steam_api_key))
+        conn.execute('INSERT INTO userstable(username, password) VALUES (?, ?)', (username, password))
         conn.commit()
 
 def login_user(username, password):
     with get_db_connection() as conn:
         user = conn.execute('SELECT * FROM userstable WHERE username = ? AND password = ?', (username, password)).fetchone()
         return user
-
-def update_steam_api_key(username, steam_api_key):
-    with get_db_connection() as conn:
-        conn.execute('UPDATE userstable SET steamapikey = ? WHERE username = ?', (steam_api_key, username))
-        conn.commit()
-
-def is_steam_api_key_zero(username):
-    with get_db_connection() as conn:
-        api_key = conn.execute('SELECT steamapikey FROM userstable WHERE username = ?', (username,)).fetchone()
-        if api_key and api_key['steamapikey'] == '0':
-            return True
-        else:
-            return False
- 
