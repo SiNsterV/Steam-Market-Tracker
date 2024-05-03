@@ -17,7 +17,7 @@ def create_usertable():
             username TEXT UNIQUE, 
             password TEXT, 
             preset_name TEXT UNIQUE,
-            items TEXT NOT NULL,
+            items TEXT,
             UNIQUE(username,preset_name)
             );
         ''')
