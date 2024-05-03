@@ -4,5 +4,4 @@ streamlit_autorefresh
 pandas
 datetime
 pathlib
-sqlite3
 hashlib
