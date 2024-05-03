@@ -37,6 +37,8 @@ def main():
                 st.success(f"Logged In as {username}")
                 choice = "Update Steam API Key"
                 st.rerun()
+            else:
+                st.error("This process didn't succeed")
 
     elif choice == "SignUp" and 'user' not in st.session_state:
         st.subheader("Create New Account")
