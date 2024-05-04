@@ -14,6 +14,7 @@ def main():
         # User is not logged in
         menu = ["Login", "SignUp"]
         choice = st.sidebar.selectbox("Menu", menu)
+        st.title("Please, create a new account to sign in, or sign in to your existing account.")
     else:
         # User is logged in
         menu = ["Home", "Logout"]
@@ -27,7 +28,6 @@ def main():
         st.sidebar.subheader("Login Section")
         username = st.sidebar.text_input("User Name")
         password = st.sidebar.text_input("Password", type='password')
-        steam_api_key = "0"
         if st.sidebar.button("Login"):
             data.create_usertable()
             hashed_pswd = data.make_hashes(password)
@@ -41,15 +41,16 @@ def main():
                 st.error("This process didn't succeed")
 
     elif choice == "SignUp" and 'user' not in st.session_state:
-        st.subheader("Create New Account")
-        new_user = st.text_input("Username")
-        new_password = st.text_input("Password", type='password')
-        steam_api_key = "0"
-        if st.button("Signup"):
+        st.sidebar.subheader("Create New Account")
+        new_user = st.sidebar.text_input("Username")
+        new_password = st.sidebar.text_input("Password", type='password')
+        if st.sidebar.button("Signup") and new_user and new_password:
             data.create_usertable()
             data.add_userdata(new_user, data.make_hashes(new_password))
             st.success("You have successfully created an account")
             st.info("Go to Login Menu to login")
+        else:
+            st.sidebar.error("Username or password is empty.")
 
     elif choice == "Logout":
         st.session_state.pop('user', None)  # Remove user from session
